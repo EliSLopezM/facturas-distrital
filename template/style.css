@@ -1,0 +1,67 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  .container {
+    max-width: 1200px;
+  }
+  
+  /* Estilo para la barra de navegación */
+  .navbar {
+    border-bottom: 2px solid #e9ecef;
+  }
+  
+  /* Estilo para los botones de la barra de navegación */
+  .navbar-nav .nav-link {
+    color: #000;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #198754;
+  }
+  
+  /* Estilo para los botones de consulta */
+  .btn-success,
+  .btn-warning,
+  .btn-danger {
+    margin-right: 10px;
+  }
+  
+  /* Estilo para las tablas */
+  .table {
+    background-color: #fff;
+  }
+  
+  /* Estilo para las filas impares */
+  .table tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+  }
+  
+  /* Estilo para los formularios */
+  .form-control {
+    border-radius: 0;
+  }
+  
+  /* Estilo para los títulos de sección */
+  h2 {
+    color: #198754;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo para los títulos de formulario */
+  h3 {
+    color: #0d6efd;
+  }
+  
+  /* Estilo para los botones de enviar */
+  .btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0b5ed7;
+  }

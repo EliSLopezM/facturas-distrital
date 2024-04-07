@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bill-EliLopez</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#creaciones">Creaciones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#consultas">Consultas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#creacionFactura">Creacion Factura</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#vistaFactura">Ver Facturacion</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <section id="consultas">
+        <h3>Consultas</h3>
+
+        <button type="button" class="btn btn-success" id="btnConsultaUsuarios">
+          Consulta Usuarios
+        </button>
+        <button type="button" class="btn btn-warning" id="btnConsultaProductos">
+          Consulta Productos
+        </button>
+        <button type="button" class="btn btn-danger" id="btnConsultaFacturas">
+          Consulta Facturas
+        </button>
+
+        <div
+          class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded"
+          id="tablaUsuarios"
+          style="display: none"
+        >
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Cedula</th>
+                <th>Primer Nombre</th>
+                <th>Primer Apellido</th>
+                <th>Direccion</th>
+                <th>Celular</th>
+                <th>Email</th>
+                <th>Facturas</th>
+                <th>Fecha Creacion</th>
+              </tr>
+            </thead>
+            <tbody id="data"></tbody>
+          </table>
+        </div>
+
+        <script>
+          const btnConsultaUsuarios = document.getElementById(
+            "btnConsultaUsuarios"
+          );
+          const btnConsultaFacturas = document.getElementById(
+            "btnConsultaFacturas"
+          );
+          const tablaUsuarios = document.getElementById("tablaUsuarios");
+
+          let isTablaVisible = false; // Variable para controlar la visibilidad
+
+          btnConsultaUsuarios.addEventListener("click", () => {
+            // Existing logic for fetching user data
+            if (!isTablaVisible) {
+              fetch("http://localhost:2024/users")
+                .then((response) => response.json())
+                .then((data) => mostrarData(data))
+                .catch((error) => console.error(error));
+              isTablaVisible = true; // Tabla visible
+              tablaUsuarios.style.display = "block";
+            } else {
+              isTablaVisible = false; // Tabla oculta
+              tablaUsuarios.style.display = "none";
+            }
+          });
+
+          // Add similar logic for btnConsultaProductos and btnConsultaFacturas
+          btnConsultaProductos.addEventListener("click", () => {
+            // Fetch product data (replace with your actual logic)
+            console.log("Consultando productos...");
+          });
+
+          btnConsultaFacturas.addEventListener("click", () => {
+            // Fetch factura data (replace with your actual logic)
+            console.log("Consultando facturas...");
+          });
+
+          const mostrarData = (data) => {
+            console.log(data);
+            let body = "";
+            for (let i = 0; i < data.length; i++) {
+              body += `<tr><td>${data[i].id}</td><td>${data[i].cedula}</td><td>${data[i].primer_nombre}</td><td>${data[i].primer_apellido}</td><td>${data[i].direccion}</td><td>${data[i].celular}</td><td>${data[i].email}</td><td>${data[i].Facturas}</td><td>${data[i].CreatedAt}</td></tr>`;
+            }
+            document.getElementById("data").innerHTML = body;
+          };
+        </script>
+        <div
+          class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded"
+          id="tablaProductos"
+          style="display: none"
+        >
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio Unitario</th>
+                <th>Cantidad</th>
+                <th>Descripción</th>
+              </tr>
+            </thead>
+            <tbody id="productData"></tbody>
+          </table>
+        </div>
+
+        <script>
+          const btnConsultaProductos = document.getElementById(
+            "btnConsultaProductos"
+          );
+
+          btnConsultaProductos.addEventListener("click", () => {
+            const tablaProductos = document.getElementById("tablaProductos");
+
+            if (tablaProductos.style.display === "none") {
+              // Check if table is hidden
+              fetch("http://localhost:2024/products")
+                .then((response) => response.json())
+                .then((data1) => mostrarProductos(data1))
+                .catch((error) => console.error(error));
+            }
+
+            tablaProductos.style.display =
+              tablaProductos.style.display === "none" ? "block" : "none"; // Toggle visibility
+          });
+
+          const mostrarProductos = (data1) => {
+            console.log(data1);
+            let body = "";
+            for (let i = 0; i < data1.length; i++) {
+              // Adjust table data as needed for product data structure
+              body += `<tr><td>${data1[i].id}</td><td>${data1[i].nombre}</td><td>${data1[i].precio_unitario}</td><td>${data1[i].cantidad}</td><td>${data1[i].descripcion}</td></tr>`;
+            }
+            document.getElementById("productData").innerHTML = body;
+          };
+        </script>
+      </section>
+
+      <section id="creacionFactura" class="container mt-4">
+        <h2>Creación Factura</h2>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <h3>Datos de Usuario</h3>
+            <form id="dataForm">
+              <div class="mb-3">
+                <label for="cedula" class="form-label"
+                  >Cédula (Obligatorio)</label
+                >
+                <input type="text" class="form-control" id="cedula" required />
+              </div>
+              <div class="mb-3">
+                <label for="PrimerNombre" class="form-label"
+                  >Primer Nombre (Obligatorio)</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="PrimerNombre"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="PrimerApellido" class="form-label"
+                  >Primer Apellido (Obligatorio)</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="PrimerApellido"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="direccion" />
+              </div>
+              <div class="mb-3">
+                <label for="celular" class="form-label"
+                  >Celular (Obligatorio)</label
+                >
+                <input type="text" class="form-control" id="celular" required />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label"
+                  >Email (Obligatorio)</label
+                >
+                <input type="email" class="form-control" id="email" required />
+              </div>
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+          </div>
+          <script>
+            const form = document.getElementById("dataForm");
+
+            form.addEventListener("submit", (event) => {
+              event.preventDefault(); // Evita el envío por defecto del formulario
+
+              // Obtiene los datos del formulario
+              const cedula = document.getElementById("cedula").value;
+              const PrimerNombre =
+                document.getElementById("PrimerNombre").value;
+              const PrimerApellido =
+                document.getElementById("PrimerApellido").value;
+              const direccion = document.getElementById("direccion").value; // Campo opcional
+              const celular = document.getElementById("celular").value;
+              const email = document.getElementById("email").value;
+
+              // Crea el objeto con los datos del usuario
+              const data = {
+                Cedula: cedula,
+                PrimerNombre: PrimerNombre,
+                PrimerApellido: PrimerApellido,
+                Direccion: direccion,
+                Celular: celular,
+                Email: email,
+              };
+
+              // Envía los datos a la API usando la URL y método POST
+              fetch("http://localhost:2024/users", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              })
+                .then((response) => response.json())
+                .then((responseData) => {
+                  console.log("Usuario creado:", responseData);
+                  // Manejar la respuesta exitosa, por ejemplo, mostrar un mensaje de éxito y limpiar el formulario
+                  form.reset(); // Limpiar el formulario después del envío
+                })
+                .catch((error) => {
+                  console.error("Error al crear usuario:", error);
+                  // Manejar los errores, por ejemplo, mostrar un mensaje de error al usuario
+                });
+            });
+          </script>
+          <div class="col-md-6 mb-4">
+            <h3>Datos del Producto</h3>
+            <form id="productForm">
+              <div class="mb-3">
+                <label for="id" class="form-label">ID (Obligatorio)</label>
+                <input type="number" class="form-control" id="id" required />
+              </div>
+              <div class="mb-3">
+                <label for="nombre" class="form-label"
+                  >Nombre (Obligatorio)</label
+                >
+                <input type="text" class="form-control" id="nombre" required />
+              </div>
+              <div class="mb-3">
+                <label for="precioUnitario" class="form-label"
+                  >Precio Unitario (Obligatorio)</label
+                >
+                <input
+                  type="number"
+                  step="0.01"
+                  class="form-control"
+                  id="precioUnitario"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="cantidad" class="form-label"
+                  >Cantidad (Obligatorio)</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="cantidad"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+          </div>
+          <script>
+            const userData = {
+              cedula: $("#cedula").val(),
+              primerNombre: $("#PrimerNombre").val(),
+              apellido: $("#PrimerApellido").val(), // Assuming "PrimerApellido" is for last name
+              direccion: $("#direccion").val(),
+              celular: $("#celular").val(),
+              email: $("#email").val(),
+            };
+
+            $("#cedula").text(userData.cedula);
+            $("#primerNombre").text(userData.primerNombre);
+            // Assuming separate element for last name:
+            $("#segundoNombre").text(userData.apellido);
+            $("#direccion").text(userData.direccion);
+            $("#celular").text(userData.celular);
+            $("#email").text(userData.email);
+
+            const form1 = document.getElementById("productForm");
+
+            form1.addEventListener("submit", (event) => {
+              event.preventDefault(); // Evita el envío por defecto del formulario
+
+              // Obtiene los datos del formulario
+              const id = document.getElementById("id").value;
+              const nombre = document.getElementById("nombre").value;
+              const precioUnitario =
+                document.getElementById("precioUnitario").value;
+              const cantidad = document.getElementById("cantidad").value;
+              const descripcion = document.getElementById("descripcion").value;
+
+              // Crea el objeto con los datos del producto
+              const data = {
+                ID: id,
+                Nombre: nombre,
+                PrecioUnitario: precioUnitario,
+                Cantidad: cantidad,
+                Descripcion: descripcion,
+              };
+
+              // Envía los datos a la API usando la URL y método POST
+              fetch("http://localhost:2024/products", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              })
+                .then((response) => response.json())
+                .then((responseData) => {
+                  console.log("Producto creado:", responseData);
+                  // Manejar la respuesta exitosa, por ejemplo, mostrar un mensaje de éxito y limpiar el formulario
+                  form.reset(); // Limpiar el formulario después del envío
+                })
+                .catch((error) => {
+                  console.error("Error al crear producto:", error);
+                  // Manejar los errores, por ejemplo, mostrar un mensaje de error al usuario
+                });
+            });
+
+            $(document).ready(function () {
+              $("#productForm").submit(function (event) {
+                event.preventDefault(); // Evita el envío por defecto del formulario
+
+                // Obtiene los datos del producto
+                const id = $("#id").val();
+                const nombre = $("#nombre").val();
+                const precioUnitario = $("#precioUnitario").val();
+                const cantidad = $("#cantidad").val();
+                const descripcion = $("#descripcion").val();
+
+                // Crea el objeto con los datos del producto
+                const producto = {
+                  id: id,
+                  nombre: nombre,
+                  precioUnitario: precioUnitario,
+                  cantidad: cantidad,
+                  descripcion: descripcion,
+                };
+
+                // Agrega el producto a la tabla de productos
+                const filaProducto = `<tr>
+      <td>${producto.id}</td>
+      <td>${producto.nombre}</td>
+      <td>${producto.precioUnitario}</td>
+      <td>${producto.cantidad}</td>
+      <td>${producto.descripcion}</td>
+    </tr>`;
+                $("#productos").append(filaProducto);
+
+                // Actualiza el valor total de la factura
+                // ... (Aquí se debe implementar la lógica para actualizar el valor total)
+
+                // Limpiar el formulario después del envío
+                $("#productForm").reset();
+              });
+            });
+          </script>
+        </div>
+        <h3>Factura Final</h3>
+        <div id="message"></div>
+      </section>
+      <section id="factura">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card mb-3">
+                <div class="card-header">Datos del cliente</div>
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      Cédula: <span id="cedula"></span>
+                    </li>
+                    <li class="list-group-item">
+                      Nombre: <span id="primerNombre"></span>
+                      <span id="segundoNombre"></span>
+                    </li>
+                    <li class="list-group-item">
+                      Dirección: <span id="direccion"></span>
+                    </li>
+                    <li class="list-group-item">
+                      Celular: <span id="celular"></span>
+                    </li>
+                    <li class="list-group-item">
+                      Email: <span id="email"></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card mb-3">
+                <div class="card-header">Datos de la factura</div>
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      Fecha: <span id="fecha"></span>
+                    </li>
+                    <li class="list-group-item">ID: <span id="id"></span></li>
+                    <li class="list-group-item">
+                      Cliente ID: <span id="clienteID"></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">Productos</div>
+                <div class="card-body">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio Unitario</th>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                      </tr>
+                    </thead>
+                    <tbody id="productos"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card text-right">
+                <div class="card-body">
+                  <p>Valor total: <span id="valorTotal"></span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="btnListo">
+            Listo
+          </button>
+          <button>Refrescar</button>
+        </div>
+        <script>
+          $(document).ready(function () {
+            // Obtiene los datos de la factura
+            $.ajax({
+              url: "http://localhost:2024/facturas/1", // Cambiar la URL por la API real
+              success: function (data) {
+                // Rellena los datos de la factura
+                $("#fecha").text(data.fecha);
+                $("#id").text(data.id);
+                $("#clienteID").text(data.clienteID);
+                $("#cedula").text(data.cliente.cedula);
+                $("#primerNombre").text(data.cliente.primerNombre);
+                $("#segundoNombre").text(data.cliente.segundoNombre);
+                $("#direccion").text(data.cliente.direccion);
+                $("#celular").text(data.cliente.celular);
+                $("#email").text(data.cliente.email);
+
+                // Rellena la tabla de productos
+                var productosHtml = "";
+                for (var i = 0; i < data.productos.length; i++) {
+                  productosHtml += "<tr>";
+                  productosHtml += "<td>" + data.productos[i].id + "</td>";
+                  productosHtml += "<td>" + data.productos[i].nombre + "</td>";
+                  productosHtml +=
+                    "<td>" + data.productos[i].precioUnitario + "</td>";
+                  productosHtml +=
+                    "<td>" + data.productos[i].cantidad + "</td>";
+                  productosHtml +=
+                    "<td>" + data.productos[i].descripcion + "</td>";
+                  productosHtml += "</tr>";
+                }
+                $("#productos").html(productosHtml);
+              },
+            });
+          });
+        </script>
+      </section>
+      <script>
+        $(document).ready(function () {
+          $("#btnListo").click(function () {
+            // Calcular el valor total de la factura
+            let valorTotal = 0;
+            $("#productos tr").each(function () {
+              const precioUnitario = parseFloat(
+                $(this).find("td:nth-child(3)").text()
+              );
+              const cantidad = parseInt($(this).find("td:nth-child(4)").text());
+              valorTotal += precioUnitario * cantidad;
+            });
+
+            // Mostrar el valor total de la factura
+            $("#valorTotal").text(valorTotal.toFixed(2));
+
+            // Deshabilitar el formulario y el botón "Listo"
+            $("#productForm").prop("disabled", true);
+            $("#btnListo").prop("disabled", true);
+          });
+        });
+      </script>
+    </main>
+  </body>
+</html>
